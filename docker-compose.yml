@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: registry.gitlab.com/lotfi-dotcom/terminapp:main # Korrigierter, kleingeschriebener Pfad
+    container_name: terminapp_frontend
+    ports:
+      - "80:80" # Mappt Port 80 des Hosts auf Port 80 des Containers
+    restart: always
