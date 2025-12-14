@@ -37,5 +37,5 @@ jobs:
           push: true
           # Definiert die Tags für das Image. Hier: 'latest' und die Commit-SHA
           tags: |
-            ghcr.io/lotfi-dotcom/terminapp:latest
-            ghcr.io/lotfi-dotcom/terminapp:${{ github.sha }}
+            ghcr.io/lotfi-dotcom/artztterminapp:latest
+            ghcr.io/lotfi-dotcom/artztterminappterminapp:${{ github.sha }}
