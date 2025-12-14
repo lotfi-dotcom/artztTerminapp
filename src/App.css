@@ -1,38 +1,305 @@
+/* Globale Stile & Variablen */
+:root {
+  --primary-color: #61dafb;
+  --background-color: #282c34;
+  --card-background: #3c414e;
+  --text-color: #ffffff;
+  --btn-primary-text: #000;
+  --danger-color: #ff6b6b;
+  --border-radius: 8px;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+/* App-Layout */
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App-header {
+  background-color: #20232a;
+  padding: 20px;
+  color: white;
+  margin-bottom: 2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.App-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+  color: var(--primary-color);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Dashboard-Layout */
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Formular nimmt 1/3, Liste 2/3 des Platzes */
+  gap: 2rem;
+  align-items: start;
+}
+
+/* Responsive Anpassung für kleinere Bildschirme */
+@media (max-width: 960px) {
+  .dashboard-layout {
+    grid-template-columns: 1fr; /* Spalten untereinander anordnen */
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+h2 {
+  color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Formular-Stile */
+.form-container,
+.appointment-list-container {
+  background-color: var(--card-background);
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.appointment-form .form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.appointment-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.appointment-form input,
+.appointment-form select {
+  width: 100%;
+  padding: 0.8rem;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background-color: #505562;
+  color: var(--text-color);
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+.appointment-form select:disabled {
+  background-color: #4a4f5a;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.appointment-form input:focus,
+.appointment-form select:focus,
+.btn:focus {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Button-Stile */
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: var(--btn-primary-text);
+}
+
+.btn-primary:hover {
+  background-color: #88eaff;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: var(--text-color);
+}
+
+.btn-secondary:hover {
+  background-color: #868e96;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: var(--text-color);
+}
+
+.btn-danger:hover {
+  background-color: #ff8787;
+}
+
+/* Terminliste */
+/* Terminlisten-Stile */
+.appointment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.appointment-item {
+  background-color: #505562;
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  text-align: left;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+}
+
+.appointment-item-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.appointment-item p {
+  margin: 0 0 0.75rem 0;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+}
+
+/* Filter & Sortierung */
+/* Filter- und Sortier-Steuerelemente */
+.list-controls {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.list-controls .form-group {
+  flex-grow: 1;
+  margin-bottom: 0;
+}
+
+/* Wrapper für Arzt-Auswahl mit Spinner */
+.doctor-select-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.doctor-select-wrapper .spinner {
+  position: absolute;
+  right: 2.5rem; /* Positioniert den Spinner im Select-Feld */
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+/* Spinner-Animation */
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: var(--primary-color);
+  width: 2rem;
+  height: 2rem;
+  animation: spin 1s ease-in-out infinite;
+}
+
+/* Animationen & Bestätigungen */
+/* Bestätigungsnachricht */
+.confirmation-message {
+  background-color: #2e7d32; /* Dunkelgrün */
+  color: var(--text-color);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+  animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Paginierungs-Stile */
+.pagination-container {
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin-top: 2rem;
 }
 
-.App-link {
-  color: #61dafb;
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: 0.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.page-item .page-link {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #555;
+  background-color: #505562;
+  color: var(--text-color);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.page-item.active .page-link {
+  background-color: var(--primary-color);
+  color: var(--btn-primary-text);
+  border-color: var(--primary-color);
+  font-weight: bold;
+}
+
+.page-item:not(.disabled) .page-link:hover {
+  background-color: #6c757d;
+}
+
+.page-item.disabled .page-link {
+  color: #868e96;
+  cursor: not-allowed;
+  background-color: #4a4f5a;
+  opacity: 0.6;
+}
+
+.page-item:focus-within .page-link {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
   }
-  to {
-    transform: rotate(360deg);
+  15%, 85% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
   }
 }
