@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   frontend:
-    image: registry.gitlab.com/lotfi-dotcom/terminapp:main # Korrigierter, kleingeschriebener Pfad
+    image: ghcr.io/lotfi-dotcom/terminapp:latest # Neuer Pfad zur GitHub Container Registry
     container_name: terminapp_frontend
     ports:
       - "80:80" # Mappt Port 80 des Hosts auf Port 80 des Containers

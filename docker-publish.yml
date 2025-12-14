@@ -1,0 +1,41 @@
+# Name des GitHub Actions Workflows
+name: Docker Image CI
+
+# Definiert, wann der Workflow ausgeführt wird
+on:
+  # Führt den Workflow bei jedem Push auf den 'main'-Branch aus
+  push:
+    branches: [ "main" ]
+
+# Definiert die Jobs, die im Workflow ausgeführt werden
+jobs:
+  build_and_push:
+    # Der Typ der Maschine, auf der der Job laufen soll
+    runs-on: ubuntu-latest
+
+    # Schritte, die im Job ausgeführt werden
+    steps:
+      # 1. Schritt: Code aus dem Repository auschecken
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Schritt: An der GitHub Container Registry (ghcr.io) anmelden
+      # Verwendet ein sicheres, von GitHub bereitgestelltes Token
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 3. Schritt: Docker-Image bauen und in die Registry pushen
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          # Pusht das Image in die Registry
+          push: true
+          # Definiert die Tags für das Image. Hier: 'latest' und die Commit-SHA
+          tags: |
+            ghcr.io/lotfi-dotcom/terminapp:latest
+            ghcr.io/lotfi-dotcom/terminapp:${{ github.sha }}
