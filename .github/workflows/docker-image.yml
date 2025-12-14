@@ -1,0 +1,45 @@
+# Name des GitHub Actions Workflows
+name: Docker Image CI
+
+# Definiert, wann der Workflow ausgeführt wird
+on:
+  # Führt den Workflow bei jedem Push auf den 'main'-Branch aus
+  push:
+    branches: [ "main" ]
+
+# Definiert die Umgebungsvariablen für das Image
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }} # wird zu lotfi-dotcom/artztterminapp
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # Zum Lesen des Codes
+      packages: write # WICHTIG: Zum Schreiben in die GHCR
+
+    steps:
+      # 1. Schritt: Code aus dem Repository auschecken
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Schritt: An der GitHub Container Registry (ghcr.io) anmelden
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          # Verwenden Sie das von GitHub bereitgestellte Token (erfordert permissions: packages: write)
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # 3. Schritt: Docker-Image bauen und in die Registry pushen
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: . # Finde das Dockerfile im aktuellen Verzeichnis
+          push: true # Führt den Push-Befehl aus
+          # Definiert die Tags für das Image
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
