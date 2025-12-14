@@ -1,0 +1,31 @@
+# Definiere die Phasen der Pipeline
+stages:
+  - build
+
+# Standard-Image für alle Jobs
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+  # Name des Docker-Images. CI_REGISTRY_IMAGE ist eine vordefinierte GitLab-Variable,
+  # die auf die Registry deines Projekts verweist.
+  IMAGE_TAG: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+
+build:
+  stage: build
+  before_script:
+    # Melde dich bei der GitLab Container Registry an.
+    # CI_REGISTRY_USER und CI_JOB_TOKEN sind sichere, vordefinierte GitLab-Variablen.
+    - docker login -u $CI_REGISTRY_USER -p $CI_JOB_TOKEN $CI_REGISTRY
+  script:
+    # Baue das Docker-Image
+    - echo "Building Docker image: $IMAGE_TAG"
+    - docker build -t $IMAGE_TAG .
+    # Lade das Image in die GitLab Registry hoch
+    - echo "Pushing Docker image to registry..."
+    - docker push $IMAGE_TAG
+  rules:
+    # Führe diesen Job nur für den main-Branch aus
+    - if: '$CI_COMMIT_BRANCH == "main"'
