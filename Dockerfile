@@ -22,7 +22,7 @@ FROM nginx:stable-alpine
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # Kopiere die Nginx-Konfiguration, um SPA-Routing zu ermöglichen
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Exponiere Port 80
 EXPOSE 80
